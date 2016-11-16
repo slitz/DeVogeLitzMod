@@ -34,7 +34,9 @@ public class connectionsProcessor extends ViewableAtomic{
 		addOutport("out");		
 		
 		addTestInput("in", new entity("1000"));
+		addTestInput("in", new entity("-1000"));
 		addTestInput("in", new entity("5000"));
+		addTestInput("in", new entity("-5000"));
 	}
 	    
 	public void initialize() {
@@ -46,13 +48,15 @@ public class connectionsProcessor extends ViewableAtomic{
 	
 	public void  deltext(double e, message x) { 
 		Continue(e);
-		if (phaseIs("passive"))
-			for (int i = 0; i < x.getLength(); i++)
+		if (phaseIs("passive")) {
+			for (int i = 0; i < x.getLength(); i++) {
 				if (messageOnPort(x, "in", i)) {
 					new_connections = x.getValOnPort("in", i);
 					total_connections = total_connections + Integer.parseInt(new_connections.toString());
 					holdIn("busy", 1);
 				}
+			}
+		}
 	}
 	
 	public void  deltint( ) { 
