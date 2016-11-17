@@ -13,15 +13,15 @@ package DeVogeLitzMod;
 import model.modeling.*;
 import view.modeling.ViewableAtomic;
 
-public class NetworkLatencyGenerator extends ViewableAtomic{  
+public class networkLatencyGenerator extends ViewableAtomic{  
 	
 	protected double int_arr_time;
                                     
-	public NetworkLatencyGenerator() {
-		this("systemConfigurationGenerator", 30);
+	public networkLatencyGenerator() {
+		this("networkLatencyGenerator", 30);
 	}
 	
-	public NetworkLatencyGenerator(String name, double Int_arr_time) { 
+	public networkLatencyGenerator(String name, double Int_arr_time) { 
 	   super(name);
 	   addInport("in");
 	   addOutport("out");

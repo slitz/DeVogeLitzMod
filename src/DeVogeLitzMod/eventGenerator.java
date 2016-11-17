@@ -30,7 +30,7 @@ public class eventGenerator extends ViewableDigraph{
 	
 	    ViewableAtomic ccg = new clientConnectionsGenerator("ccg", 5);
 	    ViewableAtomic scg = new systemConfigurationGenerator("scg", 5);
-	    ViewableAtomic scg = new NetworkLatencyGenerator("nlg", 5);
+	    ViewableAtomic nlg = new NetworkLatencyGenerator("nlg", 5);
 		
 	    add(ccg);
 	    add(scg);
@@ -64,7 +64,7 @@ public class eventGenerator extends ViewableDigraph{
         preferredSize = new Dimension(275, 150);
         ((ViewableComponent)withName("ccg")).setPreferredLocation(new Point(-5, 22));
         ((ViewableComponent)withName("scg")).setPreferredLocation(new Point(-5, 85));
-	((ViewableComponent)withName("nlg")).setPreferredLocation(new Point(-5, 130));    
+        ((ViewableComponent)withName("nlg")).setPreferredLocation(new Point(-5, 130));    
     }
 }
 
