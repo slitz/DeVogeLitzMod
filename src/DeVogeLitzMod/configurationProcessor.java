@@ -32,17 +32,16 @@ public class configurationProcessor extends ViewableAtomic{
 	public configurationProcessor(String name, double Processing_time) { 
 		super(name);
 		processing_time = Processing_time;
-		addInport("config");
-		addInport("latency");
+		addInport("in");		
 		addOutport("out");	
 		
-		addTestInput("config", new entity("basic"));
-		addTestInput("config", new entity("advanced"));
-		addTestInput("config", new entity("multicore"));
+		addTestInput("in", new entity("basic"));
+		addTestInput("in", new entity("advanced"));
+		addTestInput("in", new entity("multicore"));
 		
-		addTestInput("latency", new entity("none"));
-		addTestInput("latency", new entity("medium"));
-		addTestInput("latency", new entity("high"));
+		addTestInput("in", new entity("none"));
+		addTestInput("in", new entity("medium"));
+		addTestInput("in", new entity("high"));
 	}
 	    
 	public void initialize() {
@@ -57,13 +56,12 @@ public class configurationProcessor extends ViewableAtomic{
 		Continue(e);
 		if (phaseIs("passive")) {
 			for (int i = 0; i < x.getLength(); i++) {
-				if (messageOnPort(x, "config", i)) {
-					configuration = x.getValOnPort("config", i);					
-					holdIn("busy", 1);
-				}
-				if (messageOnPort(x, "latency", i)) {
-					network_latency = x.getValOnPort("latency", i);	
-					holdIn("busy", 1);
+				if (messageOnPort(x, "in", i)) {
+					entity ent = x.getValOnPort("in", i);
+					Pair pr = (Pair)ent;
+					entity en = (entity)pr.getValue();
+					configuration = en;
+					holdIn("busy", 0);
 				}
 			}
 		}
@@ -81,7 +79,7 @@ public class configurationProcessor extends ViewableAtomic{
 	public message out( ) {
 		message m = new message();
 		if (phaseIs("busy")) {
-			m.add(makeContent("out", new entity("" + compute_max_connections())));
+			m.add(makeContent("out", new Pair(new entity("max connections"), new entity("" + compute_max_connections()))));
 		}
 		return m;
 	}

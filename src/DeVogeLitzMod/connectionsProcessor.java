@@ -51,9 +51,12 @@ public class connectionsProcessor extends ViewableAtomic{
 		if (phaseIs("passive")) {
 			for (int i = 0; i < x.getLength(); i++) {
 				if (messageOnPort(x, "in", i)) {
-					new_connections = x.getValOnPort("in", i);
+					entity ent = x.getValOnPort("in", i);
+					Pair pr = (Pair)ent;
+					entity en = (entity)pr.getKey();
+					new_connections = en;
 					total_connections = total_connections + Integer.parseInt(new_connections.toString());
-					holdIn("busy", 1);
+					holdIn("busy", 0);
 				}
 			}
 		}
@@ -71,7 +74,7 @@ public class connectionsProcessor extends ViewableAtomic{
 	public message out( ) {
 		message m = new message();
 		if (phaseIs("busy")) {
-			m.add(makeContent("out", new entity(Integer.toString(total_connections))));
+			m.add(makeContent("out", new Pair(new entity("total connections"), new entity(Integer.toString(total_connections)))));
 		}
 		return m;
 	}
