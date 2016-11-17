@@ -79,7 +79,7 @@ public class configurationProcessor extends ViewableAtomic{
 	public message out( ) {
 		message m = new message();
 		if (phaseIs("busy")) {
-			m.add(makeContent("out", new Pair(new entity("max connections"), new entity("" + compute_max_connections()))));
+			m.add(makeContent("out", new Pair(new entity("max connections"), new entity("" + Math.round(compute_max_connections())))));
 		}
 		return m;
 	}
