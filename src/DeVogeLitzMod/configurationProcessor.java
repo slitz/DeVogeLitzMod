@@ -58,9 +58,11 @@ public class configurationProcessor extends ViewableAtomic{
 			for (int i = 0; i < x.getLength(); i++) {
 				if (messageOnPort(x, "in", i)) {
 					entity ent = x.getValOnPort("in", i);
-					Pair pr = (Pair)ent;
-					entity en = (entity)pr.getValue();
-					configuration = en;
+					// the entity passed from the generator is a pair that contains a pair and an entity
+					Pair pr1 = (Pair)ent;
+					Pair pr2 = (Pair)pr1.getKey();					
+					configuration = (entity)pr2.getValue();
+					network_latency = (entity)pr1.getValue();
 					holdIn("busy", 0);
 				}
 			}

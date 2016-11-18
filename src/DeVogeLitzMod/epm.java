@@ -28,13 +28,13 @@ public class epm extends ViewableDigraph{
 	public epm(){
 	    super("epm");
 	
-	    ViewableDigraph eg = new eventGenerator();
-	    ViewableAtomic sp = new systemProcessor("sp", 1);
-	    ViewableAtomic sm = new systemMonitor("sm", 200);
+	    ViewableDigraph g = new generatorCoupledModel("generatedCoupledModel", 200);
+	    ViewableDigraph p = new processorCoupledModel("processorCoupledModel", 200);
+	    ViewableAtomic m = new systemMonitor("systemMonitor", 200);
 	
-	    add(eg);
-	    add(sp);
-	    add(sm);
+	    add(g);
+	    add(p);
+	    add(m);
 	
 	    addInport("in");
 	    addInport("start");
@@ -42,17 +42,19 @@ public class epm extends ViewableDigraph{
 	    addOutport("out");
 	    addOutport("result");
 	
-	    addCoupling(this, "in", eg, "in");
-	    addCoupling(this, "start", eg, "start");	    
-	    addCoupling(this, "stop", eg, "stop");
+	    addCoupling(this, "in", g, "in");
+	    addCoupling(this, "start", g, "start");	    
+	    addCoupling(this, "stop", g, "stop");
 	    
-	    addCoupling(eg, "out", sp, "in");
-	    addCoupling(eg, "out", sm, "ariv");
-	    addCoupling(sp, "out", sm, "solved");
-	    addCoupling(sm, "out", eg, "stop");
+	    addCoupling(g, "out", p, "in");
+	    addCoupling(g, "out", m, "ariv");
+	    addCoupling(p, "out", m, "solved");
+	    addCoupling(m, "out", g, "stop");
 	    
-	    addCoupling(sp, "out", this, "out");
-	    addCoupling(sm, "out", this, "result");
+	    addCoupling(p, "out", this, "out");
+	    addCoupling(m, "out", this, "result");
+	    
+	    addTestInput("in", new entity("start"));
 	}
     
     /**
@@ -61,10 +63,10 @@ public class epm extends ViewableDigraph{
      */
 	public void layoutForSimView()
     {
-        preferredSize = new Dimension(591, 369);
-        ((ViewableComponent)withName("sm")).setPreferredLocation(new Point(0, 290));
-        ((ViewableComponent)withName("sp")).setPreferredLocation(new Point(278, 230));
-        ((ViewableComponent)withName("eg")).setPreferredLocation(new Point(70, 50));
+        preferredSize = new Dimension(900, 480);
+        ((ViewableComponent)withName("systemMonitor")).setPreferredLocation(new Point(0, 290));
+        ((ViewableComponent)withName("processorCoupledModel")).setPreferredLocation(new Point(278, 260));
+        ((ViewableComponent)withName("generatedCoupledModel")).setPreferredLocation(new Point(20, 40));
     }
 }
 

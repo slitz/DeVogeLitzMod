@@ -52,9 +52,10 @@ public class connectionsProcessor extends ViewableAtomic{
 			for (int i = 0; i < x.getLength(); i++) {
 				if (messageOnPort(x, "in", i)) {
 					entity ent = x.getValOnPort("in", i);
-					Pair pr = (Pair)ent;
-					entity en = (entity)pr.getKey();
-					new_connections = en;
+					// the entity passed from the generator is a pair that contains a pair and an entity
+					Pair pr1 = (Pair)ent;
+					Pair pr2 = (Pair)pr1.getKey();
+					new_connections = (entity)pr2.getKey();					
 					total_connections = total_connections + Integer.parseInt(new_connections.toString());
 					holdIn("busy", 0);
 				}

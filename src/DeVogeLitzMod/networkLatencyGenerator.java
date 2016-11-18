@@ -10,12 +10,15 @@
 
 package DeVogeLitzMod;
 
+import GenCol.Pair;
+import GenCol.entity;
 import model.modeling.*;
 import view.modeling.ViewableAtomic;
 
 public class networkLatencyGenerator extends ViewableAtomic{  
 	
 	protected double int_arr_time;
+	protected String network_latency;
                                     
 	public networkLatencyGenerator() {
 		this("networkLatencyGenerator", 30);
@@ -25,21 +28,29 @@ public class networkLatencyGenerator extends ViewableAtomic{
 	   super(name);
 	   addInport("in");
 	   addOutport("out");
-	   addInport("stop");
-	   addInport("start");
-	   int_arr_time = Int_arr_time ;		
+	   int_arr_time = Int_arr_time ;	
+	   network_latency = "";
 	}
 	    
 	public void initialize() {
-		holdIn("active", int_arr_time);
+		holdIn("passive", int_arr_time);
 		super.initialize();
 	 }
 	
 	public void  deltext(double e, message x) { 
 		Continue(e);
+		if(phaseIs("passive")) {
+			for (int i=0; i< x.getLength();i++) {
+				if (messageOnPort(x,"in",i)) {
+					holdIn("busy", int_arr_time);			
+					network_latency = "none"; // TODO: add randomizer or way to pass in latency
+				}
+			}
+		}
 	}
 	
 	public void  deltint( ) { 
+		passivate();
 	}
 	
 	public void deltcon(double e, message x) {
@@ -49,6 +60,9 @@ public class networkLatencyGenerator extends ViewableAtomic{
 	
 	public message out( ) {
 		message m = new message();
+		if (phaseIs("busy")) {
+			m.add(makeContent("out", new Pair(new entity("network latency"), new entity(network_latency))));
+		}
 		return m;
 	}
 	

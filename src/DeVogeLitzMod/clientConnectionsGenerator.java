@@ -33,8 +33,6 @@ public class clientConnectionsGenerator extends ViewableAtomic{
 	   super(name);
 	   addInport("in");
 	   addOutport("out");
-	   addInport("stop");
-	   addInport("start");
 	   int_arr_time = Int_arr_time ;
 	   if(Connections != null){
 		   connections = Connections[0];
@@ -51,7 +49,7 @@ public class clientConnectionsGenerator extends ViewableAtomic{
 		connections = 0;
 		max_connections = 5000;
 		min_connections = -5000;
-		holdIn("active", int_arr_time);
+		holdIn("passive", int_arr_time);
 		super.initialize();
 	 }
 	
@@ -59,18 +57,8 @@ public class clientConnectionsGenerator extends ViewableAtomic{
 		Continue(e);
 		if(phaseIs("passive")) {
 			for (int i=0; i< x.getLength();i++) {
-				if (messageOnPort(x,"start",i)) {
-					holdIn("active",int_arr_time);					
-				}
-			}
-		}
-		if(phaseIs("active")) {
-			for (int i=0; i< x.getLength();i++) {
-				if (messageOnPort(x,"stop",i)) {
-					phase = "finishing";
-				}
-				if (messageOnPort(x,"start",i)) {
-					holdIn("active",int_arr_time);
+				if (messageOnPort(x,"in",i)) {
+					holdIn("busy", int_arr_time);			
 					connections = rn.nextInt((max_connections - min_connections) + 1) + min_connections;
 				}
 			}
@@ -78,10 +66,7 @@ public class clientConnectionsGenerator extends ViewableAtomic{
 	}
 	
 	public void  deltint( ) { 
-		if(phaseIs("active")){
-			holdIn("active", 1);
-		}
-		else passivate();			
+		passivate();			
 	}
 	
 	public void deltcon(double e, message x) {
@@ -90,11 +75,10 @@ public class clientConnectionsGenerator extends ViewableAtomic{
 	}
 	
 	public message out( ) {
-		System.out.println(connections);
 		message m = new message();
-		content con = makeContent("out",
-	            new entity(Integer.toString(connections)));
-		m.add(con);
+		if (phaseIs("busy")) {
+			m.add(makeContent("out", new Pair(new entity("new connections"), new entity(Integer.toString(connections)))));
+		}
 		return m;
 	}
 	
