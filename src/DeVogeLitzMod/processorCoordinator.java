@@ -32,7 +32,7 @@ public class processorCoordinator extends ViewableAtomic{
 		num_procs = 0;
 		num_results = 0;
 		addInport("in");
-		addInport("setup");
+	//	addInport("setup");
 		addInport("x");
 		addOutport("out");
 		addOutport("y");
