@@ -35,7 +35,7 @@ public class generatorCoordinator extends ViewableAtomic{
 		num_genrs = 0;
 		num_results = 0;
 		addInport("in");
-		addInport("setup");
+	//	addInport("setup");
 		addInport("x");
 		addOutport("out");
 		addOutport("y");
