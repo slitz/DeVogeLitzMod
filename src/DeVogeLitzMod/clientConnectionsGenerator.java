@@ -36,8 +36,8 @@ public class clientConnectionsGenerator extends ViewableAtomic{
 		   new_connections = 1000;
 	   }
 	   
-	   addTestInput("start", new entity("start"));
-	   addTestInput("stop", new entity("stop"));
+	   addTestInput("in", new entity("start"));
+	   addTestInput("in", new entity("stop"));
 	}
 	    
 	public void initialize() {	
