@@ -27,8 +27,11 @@ public class generatorCoupledModel extends ViewableDigraph{
 
 	public generatorCoupledModel(){
 	    super("generatorCoupledModel");
-	    make(6000, 3);
+	    make(30, 3);
 	    addTestInput("in", new entity("start"));
+	    addTestInput("x", new Pair(new entity("new connections"), new entity("1000")));
+	    addTestInput("x", new Pair(new entity("system configuration"), new entity("advanced")));
+	    addTestInput("x", new Pair(new entity("network latency"), new entity("medium")));
 	}
 	
 	public generatorCoupledModel(String name, double proc_time){
@@ -40,12 +43,14 @@ public class generatorCoupledModel extends ViewableDigraph{
 		addInport("start");
 		addInport("stop");
 		addInport("in");
+		addInport("x");
 		addOutport("out");
 
-		generatorCoordinator gCoord  = new generatorCoordinator("gCoord");
+		generatorCoordinator gCoord  = new generatorCoordinator("gCoord", proc_time);
 		add(gCoord);
 
 		addCoupling(this, "in", gCoord, "in");
+		addCoupling(this, "x", gCoord, "x");
 		addCoupling(gCoord,"out", this,"out");
 
 	    clientConnectionsGenerator  ccg = new clientConnectionsGenerator("ccg", proc_time/size, null);

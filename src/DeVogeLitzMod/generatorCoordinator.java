@@ -22,14 +22,15 @@ import view.simView.*;
 
 public class generatorCoordinator extends ViewableAtomic{  
 	
+	protected double int_arr_time;
 	protected int num_genrs, num_results;
 	protected entity job, newConnectionsEnt, configurationEnt, networkLatencyEnt;	
 	                                
 	public generatorCoordinator() {
-		this("generatorCoordinator");
+		this("generatorCoordinator", 30);
 	}
 	
-	public generatorCoordinator(String name) { 
+	public generatorCoordinator(String name, double Int_arr_time) { 
 		super(name);
 		num_genrs = 0;
 		num_results = 0;
@@ -38,11 +39,11 @@ public class generatorCoordinator extends ViewableAtomic{
 		addInport("x");
 		addOutport("out");
 		addOutport("y");
+		int_arr_time = Int_arr_time ;
 	}
 	    
 	public void initialize() {
-		phase = "passive";
-		sigma = INFINITY;
+		holdIn("active", int_arr_time);
 		job = null;
 	    super.initialize();
 	 }
@@ -59,12 +60,26 @@ public class generatorCoordinator extends ViewableAtomic{
 			 }
 		}
 		
-		if (phaseIs("passive")) {
+		if (phaseIs("active")) {
 			for (int i=0; i< x.size();i++) {
 				if (messageOnPort(x,"in",i)) {
 					job = x.getValOnPort("in",i);
 					num_results = num_genrs;
 					holdIn("send_y", 0);
+				} else if (messageOnPort(x,"x",i)) {
+					entity ent = x.getValOnPort("x", i);
+					Pair pr = (Pair)ent;
+					entity en = (entity)pr.getKey();
+					if(en.toString().contains("connections")) {
+						newConnectionsEnt = (entity)pr.getValue();
+					} else if (en.toString().contains("configuration")) {
+						configurationEnt = (entity)pr.getValue();
+					} else if (en.toString().contains("network")) {
+						networkLatencyEnt = (entity)pr.getValue();
+					}
+					if (newConnectionsEnt != null && configurationEnt != null && networkLatencyEnt != null) {
+						holdIn("send_out", 0);
+					}					
 				}
 			}
 		}
@@ -75,7 +90,7 @@ public class generatorCoordinator extends ViewableAtomic{
 			networkLatencyEnt = null;
 			for (int i=0; i< x.size();i++) {
 				if (messageOnPort(x,"x",i)) {
-					num_results--;
+					// num_results--;
 					entity ent = x.getValOnPort("x", i);
 					Pair pr = (Pair)ent;
 					entity en = (entity)pr.getKey();
@@ -87,17 +102,21 @@ public class generatorCoordinator extends ViewableAtomic{
 						networkLatencyEnt = (entity)pr.getValue();
 					}
 					
-					if (num_results == 0) {
+					//if (num_results == 0) {
 						holdIn("send_out", 0);
-					}
+					//}
 			    }
 			}
 		}
 	}
 	
 	public void  deltint( ) { 
-		if (phaseIs("send_y")) {
+		if (phaseIs("active")) {
+			holdIn("active", int_arr_time);
+		} else if (phaseIs("send_y")) {
 			passivateIn("busy");
+		} else if (phaseIs("send_out")) {
+			holdIn("send_y", 0);
 		}
 		else passivate();
 	}

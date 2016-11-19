@@ -29,11 +29,11 @@ public class systemConfigurationGenerator extends ViewableAtomic{
 	   addInport("in");
 	   addOutport("out");
 	   int_arr_time = Int_arr_time ;	
-	   configuration = "";
+	   configuration = "basic";
 	}
 	    
 	public void initialize() {
-		holdIn("passive", int_arr_time);
+		holdIn("active", int_arr_time);
 		super.initialize();
 	 }
 	
@@ -42,15 +42,18 @@ public class systemConfigurationGenerator extends ViewableAtomic{
 		if(phaseIs("passive")) {
 			for (int i=0; i< x.getLength();i++) {
 				if (messageOnPort(x,"in",i)) {
-					holdIn("busy", int_arr_time);			
-					configuration = "basic"; // TODO: add randomizer or way to pass in configuration
+					holdIn("active", int_arr_time);								
 				}
 			}
 		}
 	}
 	
 	public void  deltint( ) { 
-		passivate();
+		if(phaseIs("active")){			   
+			holdIn("active", int_arr_time);
+		} else { 
+			passivate();
+		}	
 	}
 	
 	public void deltcon(double e, message x) {
@@ -60,7 +63,7 @@ public class systemConfigurationGenerator extends ViewableAtomic{
 	
 	public message out( ) {
 		message m = new message();
-		if (phaseIs("busy")) {
+		if (phaseIs("active")) {
 			m.add(makeContent("out", new Pair(new entity("configuration"), new entity(configuration))));
 		}
 		return m;

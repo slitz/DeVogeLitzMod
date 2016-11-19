@@ -19,11 +19,7 @@ import view.modeling.ViewableAtomic;
 public class clientConnectionsGenerator extends ViewableAtomic{  
 	
 	protected double int_arr_time;
-	protected int connections;
-	protected boolean random;
-	protected Random rn = new Random();
-	protected int max_connections;
-	protected int min_connections;
+	protected int new_connections;
                                     
 	public clientConnectionsGenerator() {
 		this("clientConnectionsGenerator", 1, null);
@@ -35,21 +31,17 @@ public class clientConnectionsGenerator extends ViewableAtomic{
 	   addOutport("out");
 	   int_arr_time = Int_arr_time ;
 	   if(Connections != null){
-		   connections = Connections[0];
-	   } else { 		   
-		   random = true;
+		   new_connections = Connections[0];
+	   } else {
+		   new_connections = 1000;
 	   }
 	   
 	   addTestInput("start", new entity("start"));
 	   addTestInput("stop", new entity("stop"));
 	}
 	    
-	public void initialize() {
-		random = false;
-		connections = 0;
-		max_connections = 5000;
-		min_connections = -5000;
-		holdIn("passive", int_arr_time);
+	public void initialize() {	
+		holdIn("active", int_arr_time);
 		super.initialize();
 	 }
 	
@@ -58,15 +50,18 @@ public class clientConnectionsGenerator extends ViewableAtomic{
 		if(phaseIs("passive")) {
 			for (int i=0; i< x.getLength();i++) {
 				if (messageOnPort(x,"in",i)) {
-					holdIn("busy", int_arr_time);			
-					connections = rn.nextInt((max_connections - min_connections) + 1) + min_connections;
+					holdIn("active", int_arr_time);			
 				}
 			}
 		}
 	}
 	
 	public void  deltint( ) { 
-		passivate();			
+		if(phaseIs("active")){			   
+			holdIn("active", int_arr_time);
+		} else { 
+			passivate();
+		}			
 	}
 	
 	public void deltcon(double e, message x) {
@@ -76,8 +71,8 @@ public class clientConnectionsGenerator extends ViewableAtomic{
 	
 	public message out( ) {
 		message m = new message();
-		if (phaseIs("busy")) {
-			m.add(makeContent("out", new Pair(new entity("new connections"), new entity(Integer.toString(connections)))));
+		if (phaseIs("active")) {
+			m.add(makeContent("out", new Pair(new entity("new connections"), new entity(Integer.toString(new_connections)))));
 		}
 		return m;
 	}

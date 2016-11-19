@@ -71,7 +71,7 @@ public class processorCoordinator extends ViewableAtomic{
 			maxConnectionsEnt = null;
 			for (int i=0; i< x.size();i++) {
 				if (messageOnPort(x,"x",i)) {
-					num_results--;
+					//num_results--;
 					entity ent = x.getValOnPort("x", i);
 					Pair pr = (Pair)ent;
 					entity en = (entity)pr.getKey();
@@ -80,9 +80,13 @@ public class processorCoordinator extends ViewableAtomic{
 					} else if (en.toString().contains("max")) {
 						maxConnectionsEnt = (entity)pr.getValue();
 					}
-					if (num_results == 0) {
+					//if (num_results == 0) {
 						holdIn("send_out", 0);
-					}
+					//}
+			    } else if (messageOnPort(x,"in",i)) {
+			    	job = x.getValOnPort("in",i);
+					num_results = num_procs;
+					holdIn("send_y", 0);
 			    }
 			}
 		}

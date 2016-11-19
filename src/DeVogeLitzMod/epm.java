@@ -28,33 +28,38 @@ public class epm extends ViewableDigraph{
 	public epm(){
 	    super("epm");
 	
-	    ViewableDigraph g = new generatorCoupledModel("generatedCoupledModel", 200);
-	    ViewableDigraph p = new processorCoupledModel("processorCoupledModel", 200);
-	    ViewableAtomic m = new systemMonitor("systemMonitor", 200);
+	    ViewableDigraph g = new generatorCoupledModel("generatorCoupledModel", 30);
+	    ViewableDigraph p = new processorCoupledModel("processorCoupledModel", 10);
+	    ViewableAtomic m = new systemMonitor("systemMonitor", 100);
 	
 	    add(g);
 	    add(p);
 	    add(m);
 	
 	    addInport("in");
+	    addInport("x");
 	    addInport("start");
 	    addInport("stop");
 	    addOutport("out");
 	    addOutport("result");
 	
 	    addCoupling(this, "in", g, "in");
+	    addCoupling(this, "x", g, "x");
 	    addCoupling(this, "start", g, "start");	    
 	    addCoupling(this, "stop", g, "stop");
 	    
-	    addCoupling(g, "out", p, "in");
-	    addCoupling(g, "out", m, "ariv");
-	    addCoupling(p, "out", m, "solved");
+	    addCoupling(g, "out", p, "in");	    
+	    addCoupling(p, "out", m, "in");
 	    addCoupling(m, "out", g, "stop");
 	    
 	    addCoupling(p, "out", this, "out");
-	    addCoupling(m, "out", this, "result");
+	    addCoupling(m, "capacity", this, "result");
+	    addCoupling(m, "utilization", this, "result");
 	    
 	    addTestInput("in", new entity("start"));
+	    addTestInput("x", new Pair(new entity("new connections"), new entity("1000")));
+	    addTestInput("x", new Pair(new entity("system configuration"), new entity("advanced")));
+	    addTestInput("x", new Pair(new entity("network latency"), new entity("medium")));
 	}
     
     /**
@@ -66,7 +71,7 @@ public class epm extends ViewableDigraph{
         preferredSize = new Dimension(900, 480);
         ((ViewableComponent)withName("systemMonitor")).setPreferredLocation(new Point(0, 290));
         ((ViewableComponent)withName("processorCoupledModel")).setPreferredLocation(new Point(278, 260));
-        ((ViewableComponent)withName("generatedCoupledModel")).setPreferredLocation(new Point(20, 40));
+        ((ViewableComponent)withName("generatorCoupledModel")).setPreferredLocation(new Point(20, 40));
     }
 }
 
