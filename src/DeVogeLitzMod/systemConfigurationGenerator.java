@@ -19,6 +19,7 @@ public class systemConfigurationGenerator extends ViewableAtomic{
 	
 	protected double int_arr_time;
 	protected String configuration;
+	protected int system;
                                     
 	public systemConfigurationGenerator() {
 		this("systemConfigurationGenerator", 30);
@@ -30,6 +31,7 @@ public class systemConfigurationGenerator extends ViewableAtomic{
 	   addOutport("out");
 	   int_arr_time = Int_arr_time ;	
 	   configuration = "basic";
+	   system = 1;
 	}
 	    
 	public void initialize() {
@@ -42,6 +44,7 @@ public class systemConfigurationGenerator extends ViewableAtomic{
 		if(phaseIs("passive")) {
 			for (int i=0; i< x.getLength();i++) {
 				if (messageOnPort(x,"in",i)) {
+					system = (int) (Math.random()*3) + 1;
 					holdIn("active", int_arr_time);								
 				}
 			}
@@ -64,6 +67,15 @@ public class systemConfigurationGenerator extends ViewableAtomic{
 	public message out( ) {
 		message m = new message();
 		if (phaseIs("active")) {
+			if (system = 1){
+				configuration = "basic";
+			}
+			else if (system = 2){
+				configuration = "advance";
+			}
+			else {
+				configuration = "multi-server";
+			}
 			m.add(makeContent("out", new Pair(new entity("configuration"), new entity(configuration))));
 		}
 		return m;
