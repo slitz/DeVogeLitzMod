@@ -67,14 +67,14 @@ public class networkLatencyGenerator extends ViewableAtomic{
 	public message out( ) {
 		message m = new message();
 		if (phaseIs("active")) {
-			if (latency = 1){
+			if (latency == 1){
 				network_latency = "none";
 			}
-			else if (latency = 2){
+			else if (latency == 2) {
 				network_latency = "medium";
 			}
-			else{
-				network_latency ="high";
+			else {
+				network_latency = "high";
 			}
 			m.add(makeContent("out", new Pair(new entity("network latency"), new entity(network_latency))));
 		}

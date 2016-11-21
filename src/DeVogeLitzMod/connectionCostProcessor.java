@@ -17,32 +17,27 @@ import util.rand;
 import view.modeling.ViewableAtomic;
 import view.simView.*;
 
-public class connectionsProcessor extends ViewableAtomic{  
+public class connectionCostProcessor extends ViewableAtomic{  
 	
 	protected double processing_time;
-	protected entity new_connections;
-	protected int total_connections;
+	protected entity network_latency;
+	protected static final double CONNECTION_COST = 0.245; // CPU cost per connection
                                     
-	public connectionsProcessor() {
-		this("connectionsProcessor", 1);
+	public connectionCostProcessor() {
+		this("connectionCostProcessor", 1);
 	}
 	
-	public connectionsProcessor(String name, double Processing_time) { 
+	public connectionCostProcessor(String name, double Processing_time) { 
 		super(name);
 		processing_time = Processing_time;
 		addInport("in");		
-		addOutport("out");		
-		
-		addTestInput("in", new entity("1000"));
-		addTestInput("in", new entity("-1000"));
-		addTestInput("in", new entity("5000"));
-		addTestInput("in", new entity("-5000"));
+		addOutport("out");			
 	}
 	    
 	public void initialize() {
 		phase = "passive";
 		sigma = INFINITY;
-		total_connections = 0;
+		network_latency = new entity("");
 	    super.initialize();
 	 }
 	
@@ -53,10 +48,8 @@ public class connectionsProcessor extends ViewableAtomic{
 				if (messageOnPort(x, "in", i)) {
 					entity ent = x.getValOnPort("in", i);
 					// the entity passed from the generator is a pair that contains a pair and an entity
-					Pair pr1 = (Pair)ent;
-					Pair pr2 = (Pair)pr1.getKey();
-					new_connections = (entity)pr2.getKey();					
-					total_connections = total_connections + Integer.parseInt(new_connections.toString());
+					Pair pr = (Pair)ent;
+					network_latency = (entity)pr.getValue();
 					holdIn("busy", 0);
 				}
 			}
@@ -75,9 +68,32 @@ public class connectionsProcessor extends ViewableAtomic{
 	public message out( ) {
 		message m = new message();
 		if (phaseIs("busy")) {
-			m.add(makeContent("out", new Pair(new entity("total connections"), new entity(Integer.toString(total_connections)))));
+			m.add(makeContent("out", new Pair(new entity("connection cost"), new entity("" + compute_total_connection_cost()))));
 		}
 		return m;
+	}
+	
+	private double compute_total_connection_cost() {
+		double total_connection_cost = 0;
+		int network_latency_factor = 1;
+		
+		switch (network_latency.toString()) {
+		 case "none":
+			 network_latency_factor = 1;
+			 break;
+		 case "medium":
+			 network_latency_factor = 2;
+			 break;
+		 case "high":
+			 network_latency_factor = 3;
+			 break;
+		 default:
+			 break;
+		 }
+		
+		total_connection_cost = CONNECTION_COST * network_latency_factor;
+				
+		return total_connection_cost;
 	}
 	
 	public void showState() {

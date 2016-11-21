@@ -51,12 +51,17 @@ public class systemMonitor extends ViewableAtomic{
 		       // the value on the in port arrives as a pair with total_connections as the key and max_connections as the value
 		       total_connections = (entity)pr.getKey();
 		       max_connections = (entity)pr.getValue();
+		       holdIn("active", 0);
 		    }
 		}
 	}
 	
-	public void  deltint( ) { 
-		passivate();
+	public void  deltint( ) {
+		if(phaseIs("active")) {
+			holdIn("active", observation_time);
+		} else {
+			passivate();
+		}
 	}
 	
 	public void deltcon(double e, message x) {

@@ -20,10 +20,8 @@ import view.simView.*;
 public class configurationProcessor extends ViewableAtomic{  
 	
 	protected double processing_time;
-	protected entity configuration;
-	protected entity network_latency;
-	protected static final double MAX_CPU_UTILIZATION = 0.75;  // CPU percentage threshold
-	protected static final double CONNECTION_COST = 0.245; // CPU cost per connection
+	protected entity configuration;	
+	protected static final double MAX_CPU_UTILIZATION = 0.75;  // CPU percentage threshold	
                                     
 	public configurationProcessor() {
 		this("configurationProcessor", 1);
@@ -48,7 +46,6 @@ public class configurationProcessor extends ViewableAtomic{
 		phase = "passive";
 		sigma = INFINITY;
 		configuration = new entity("");
-		network_latency = new entity("");
 	    super.initialize();
 	 }
 	
@@ -62,7 +59,6 @@ public class configurationProcessor extends ViewableAtomic{
 					Pair pr1 = (Pair)ent;
 					Pair pr2 = (Pair)pr1.getKey();					
 					configuration = (entity)pr2.getValue();
-					network_latency = (entity)pr1.getValue();
 					holdIn("busy", 0);
 				}
 			}
@@ -81,16 +77,15 @@ public class configurationProcessor extends ViewableAtomic{
 	public message out( ) {
 		message m = new message();
 		if (phaseIs("busy")) {
-			m.add(makeContent("out", new Pair(new entity("max connections"), new entity("" + Math.round(compute_max_connections())))));
+			m.add(makeContent("out", new Pair(new entity("resource capacity"), new entity("" + Math.round(compute_total_resource_capacity())))));
 		}
 		return m;
 	}
 	
-	 public double compute_max_connections(){
-		 double max_connections = 0;
+	 public double compute_total_resource_capacity(){
+		 double resource_capacity = 0;
 		 int cpu_count = 0;
 		 double cpu_speed = 0;
-		 int network_latency_factor = 1;
 		 
 		 switch (configuration.toString()) {
 		 	case "basic": 
@@ -109,23 +104,9 @@ public class configurationProcessor extends ViewableAtomic{
 		 		break;
 		 }
 		 
-		 switch (network_latency.toString()) {
-		 case "none":
-			 network_latency_factor = 1;
-			 break;
-		 case "medium":
-			 network_latency_factor = 2;
-			 break;
-		 case "high":
-			 network_latency_factor = 3;
-			 break;
-		 default:
-			 break;
-		 }
+		 resource_capacity = cpu_count * cpu_speed * MAX_CPU_UTILIZATION;
 		 
-		 max_connections = (cpu_count * cpu_speed * MAX_CPU_UTILIZATION) / (CONNECTION_COST * network_latency_factor);
-		 
-		 return max_connections;
+		 return resource_capacity;
 	 }
 	
 	public void showState() {

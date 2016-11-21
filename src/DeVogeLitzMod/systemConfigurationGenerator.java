@@ -67,10 +67,10 @@ public class systemConfigurationGenerator extends ViewableAtomic{
 	public message out( ) {
 		message m = new message();
 		if (phaseIs("active")) {
-			if (system = 1){
+			if (system == 1) {
 				configuration = "basic";
 			}
-			else if (system = 2){
+			else if (system == 2) {
 				configuration = "advance";
 			}
 			else {

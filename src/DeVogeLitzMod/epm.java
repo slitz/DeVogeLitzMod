@@ -28,39 +28,27 @@ public class epm extends ViewableDigraph{
 	public epm(){
 	    super("epm");
 	
-	    ViewableDigraph g = new generatorCoupledModel("generatorCoupledModel", 30);
-	    ViewableDigraph p = new processorCoupledModel("processorCoupledModel", 10);
-	    ViewableAtomic m = new systemMonitor("systemMonitor", 100);
+	    ViewableDigraph ef = new experimentalFrame("experimentalFrame", 1, 30);	    
+	    ViewableDigraph p = new processorCoupledModel("processorCoupledModel", 100);
 	
-	    add(g);
-	    add(p);
-	    add(m);
+	    add(ef);
+	    add(p);	    
 	
 	    addInport("in");
 	    addInport("x");
-	    //addInport("start");
-	    //addInport("stop");
 	    addOutport("out");
 	    addOutport("result");
 	
-	    addCoupling(this, "in", g, "in");
-	    addCoupling(this, "x", g, "x");
-	    //addCoupling(this, "start", g, "start");	    
-	    //addCoupling(this, "stop", g, "stop");
+	    addCoupling(this, "in", ef, "arriv");
+	    addCoupling(this, "in", ef, "solved");
+	    addCoupling(this, "x", ef, "x");
 	    
-	    addCoupling(g, "out", p, "in");	    
-	    addCoupling(p, "out", m, "in");
-	    //addCoupling(m, "out", g, "stop");
+	    addCoupling(ef, "out", p, "in");	    
+	    addCoupling(p, "out", ef, "in");
 	    
-	    addCoupling(p, "out", this, "out");
-	    addCoupling(m, "capacity", this, "result");
-	    addCoupling(m, "utilization", this, "result");
+	    addCoupling(ef, "result", this, "result");	    
 	    
-	    addTestInput("in", new entity("start"));	
-	    addTestInput("in", new entity("stop"));	
-	    addTestInput("x", new Pair(new entity("new connections"), new entity("1000")));
-	    addTestInput("x", new Pair(new entity("system configuration"), new entity("advanced")));
-	    addTestInput("x", new Pair(new entity("network latency"), new entity("medium")));
+	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("basic")), new entity("none")));
 	}
     
     /**
@@ -69,10 +57,9 @@ public class epm extends ViewableDigraph{
      */
 	public void layoutForSimView()
     {
-        preferredSize = new Dimension(900, 480);
-        ((ViewableComponent)withName("systemMonitor")).setPreferredLocation(new Point(0, 290));
-        ((ViewableComponent)withName("processorCoupledModel")).setPreferredLocation(new Point(278, 260));
-        ((ViewableComponent)withName("generatorCoupledModel")).setPreferredLocation(new Point(20, 40));
+        preferredSize = new Dimension(640, 400);
+        ((ViewableComponent)withName("experimentalFrame")).setPreferredLocation(new Point(32, 38));
+        ((ViewableComponent)withName("processorCoupledModel")).setPreferredLocation(new Point(31, 180));
     }
 }
 

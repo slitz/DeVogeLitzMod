@@ -28,9 +28,7 @@ public class processorCoupledModel extends ViewableDigraph{
 	public processorCoupledModel(){
 	    super("processorCoupledModel");
 	    make(6000,2);
-	    addTestInput("in", new Pair(new entity("1000"), new entity("basic")));
-	    addTestInput("in", new Pair(new entity("1000"), new entity("advanced")));
-	    addTestInput("in", new Pair(new entity("1000"), new entity("multicore")));
+	    addTestInput("in", new Pair(new Pair(new entity("1000"), new entity("basic")), new entity("none")));	    
 	}
 	
 	public processorCoupledModel(String name, double proc_time){
@@ -48,7 +46,7 @@ public class processorCoupledModel extends ViewableDigraph{
 		addCoupling(this, "in", procCoord, "in");
 		addCoupling(procCoord,"out",this,"out");
 
-	    connectionsProcessor  connectProc = new connectionsProcessor("connectProc", proc_time/size);
+	    connectionCostProcessor  connectProc = new connectionCostProcessor("connectCostProc", proc_time/size);
 	    configurationProcessor  configProc = new configurationProcessor("configProc", proc_time/size);	    
 
 	    add(connectProc);
@@ -56,6 +54,8 @@ public class processorCoupledModel extends ViewableDigraph{
 
 	    procCoord.add_procs(connectProc);
 	    procCoord.add_procs(configProc);
+	    
+	    
 
 	    addCoupling(procCoord, "y", connectProc,"in");
 	    addCoupling(connectProc,"out",procCoord,"x");
@@ -67,9 +67,9 @@ public class processorCoupledModel extends ViewableDigraph{
 	
     public void layoutForSimView() {
         preferredSize = new Dimension(500, 180);
-        ((ViewableComponent)withName("procCoord")).setPreferredLocation(new Point(110, 35));
-        ((ViewableComponent)withName("connectProc")).setPreferredLocation(new Point(20, 100));
-        ((ViewableComponent)withName("configProc")).setPreferredLocation(new Point(232, 100));
+        ((ViewableComponent)withName("procCoord")).setPreferredLocation(new Point(120, 35));
+        ((ViewableComponent)withName("connectCostProc")).setPreferredLocation(new Point(10, 100));
+        ((ViewableComponent)withName("configProc")).setPreferredLocation(new Point(220, 100));
     }
 }
 
