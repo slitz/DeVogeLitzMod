@@ -243,7 +243,7 @@ public class FModelView extends JPanel
         final JPanel injectPanel = new JPanel();
         injectPanel.setLayout(new BoxLayout(injectPanel,BoxLayout.Y_AXIS));
         injectPanel.setBorder(BorderFactory.createTitledBorder("Test Values"));
-        injectPanel.setPreferredSize(new Dimension(200,200));
+        injectPanel.setPreferredSize(new Dimension(400,400));
         Iterator it = model.getInputPortNames().iterator();
         ButtonGroup portNameGroup = new ButtonGroup();
         
