@@ -242,9 +242,9 @@ public class PortBox extends JPanel
             System.err.println("Biggest Size "+maxSize);
             
             
-            setSize(maxSize*12, 90+(inputs.size())*30);
+            setSize(maxSize*6, 90+(inputs.size())*15);
             
-            pane.add(new JScrollPane(list), BorderLayout.CENTER);
+            //pane.add(new JScrollPane(list), BorderLayout.CENTER);
           
             //VigneshAdd
             System.err.println(inputs.toArray().length);

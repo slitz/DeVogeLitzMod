@@ -27,7 +27,7 @@ public class experimentalFrame extends ViewableDigraph{
 
 	public experimentalFrame(){
 	    super("experimentalFrame");
-	    experimentalFrameConstruct(10, 30);
+	    experimentalFrameConstruct(1, 12);
 	    
 	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("basic")), new entity("none")));
 	}

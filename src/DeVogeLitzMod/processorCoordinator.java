@@ -109,7 +109,7 @@ public class processorCoordinator extends ViewableAtomic{
 	public message out( ) {
 		message m = new message();
 		if (phaseIs("send_out")) {
-			m.add(makeContent("out", new entity("" + compute_max_connections())));
+			m.add(makeContent("out", new entity("" + Math.round(compute_max_connections()))));
 		} else if (phaseIs("send_y")) {
 			Pair pr = (Pair)job;
 			entity jobKey = (entity)pr.getKey();

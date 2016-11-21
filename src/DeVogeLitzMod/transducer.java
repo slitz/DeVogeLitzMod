@@ -10,6 +10,9 @@
 
 package DeVogeLitzMod;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import GenCol.Pair;
 import GenCol.entity;
 import model.modeling.*;
@@ -20,16 +23,16 @@ public class transducer extends ViewableAtomic{
 	protected entity new_connections, max_connections;
 	protected double observation_time, total_connections; 
 	public int count;
+	public String[] hours_over_capacity;
                                     
 	public transducer() {
-		this("systemMonitor", 10);
+		this("systemMonitor", 12);
 	}
 	
 	public transducer(String name, double Observation_time) { 
 		super(name);
-		total_connections = 0;
 		max_connections = null;
-		count = 0;
+		hours_over_capacity = new String[(int)Observation_time];
 		observation_time = Observation_time;
 		addInport("arriv");
 		addInport("solved");
@@ -39,6 +42,8 @@ public class transducer extends ViewableAtomic{
 	public void initialize() {
 		phase = "active";
 		sigma = observation_time;
+		total_connections = 0;
+		count = 0;
 		super.initialize();
 	 }
 	
@@ -52,24 +57,20 @@ public class transducer extends ViewableAtomic{
 		       Pair pr2 = (Pair)pr1.getKey();
 		       new_connections = (entity)pr2.getKey();
 		       total_connections += Double.parseDouble(new_connections.toString());
-		    } else if(messageOnPort(x, "solved", i)) {
-		       count++;
+		    } else if(messageOnPort(x, "solved", i)) {		       
 		       entity ent = x.getValOnPort("solved", i);
 		       max_connections = ent;
 		       if(total_connections > Double.parseDouble(max_connections.toString())) {
-		    	   holdIn("finishing", 0);
+		    	   hours_over_capacity[count] = Integer.toString(count);
 		       }
+		       count++;
 		    }
 		}
 		show_state();
 	}
 	
 	public void  deltint( ) {
-		if(phaseIs("active")) {
-			holdIn("active", observation_time);
-		} else {
-			passivate();
-		}
+		passivate();
 	}
 	
 	public void deltcon(double e, message x) {
@@ -79,16 +80,15 @@ public class transducer extends ViewableAtomic{
 	
 	public message out( ) {
 		message m = new message();
-		if (phaseIs("finishing")) {
-			m.add(makeContent("out", new entity(Integer.toString(count))));
-		}
+		m.add(makeContent("out", new entity(Arrays.toString(hours_over_capacity))));
 		return m;
 	}
 	
 	public void show_state() {
 		System.out.println("New connections: "  +  new_connections);
-		System.out.println("Total connections: "  +  total_connections); 
+		System.out.println("Total connections: "  +  Math.round(total_connections)); 
 		System.out.println("Max connections: "  +  max_connections); 
+		System.out.println("Count: "  +  Integer.toString(count));
 	}
 	
 	public String getTooltipText() {

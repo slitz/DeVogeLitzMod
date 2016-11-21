@@ -28,8 +28,8 @@ public class epm extends ViewableDigraph{
 	public epm(){
 	    super("epm");
 	
-	    ViewableDigraph ef = new experimentalFrame("experimentalFrame", 1, 30);	    
-	    ViewableDigraph p = new processorCoupledModel("processorCoupledModel", 100);
+	    ViewableDigraph ef = new experimentalFrame("experimentalFrame", 1, 12);	    
+	    ViewableDigraph p = new processorCoupledModel("processorCoupledModel", 1);
 	
 	    add(ef);
 	    add(p);	    
@@ -39,8 +39,7 @@ public class epm extends ViewableDigraph{
 	    addOutport("out");
 	    addOutport("result");
 	
-	    addCoupling(this, "in", ef, "arriv");
-	    addCoupling(this, "in", ef, "solved");
+	    addCoupling(this, "in", ef, "in");
 	    addCoupling(this, "x", ef, "x");
 	    
 	    addCoupling(ef, "out", p, "in");	    
@@ -48,7 +47,17 @@ public class epm extends ViewableDigraph{
 	    
 	    addCoupling(ef, "result", this, "result");	    
 	    
+	    addTestInput("x", new Pair(new Pair(new entity("10"), new entity("basic")), new entity("none")));
+	    addTestInput("x", new Pair(new Pair(new entity("100"), new entity("advanced")), new entity("none")));
+	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("multicore")), new entity("none")));
+	    
 	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("basic")), new entity("none")));
+	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("advanced")), new entity("none")));
+	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("multicore")), new entity("none")));
+	    
+	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("basic")), new entity("none")));
+	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("advanced")), new entity("medium")));
+	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("multicore")), new entity("high")));
 	}
     
     /**
