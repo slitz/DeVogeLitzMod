@@ -10,6 +10,7 @@
 
 package DeVogeLitzMod;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -23,7 +24,7 @@ public class transducer extends ViewableAtomic{
 	protected entity new_connections, max_connections;
 	protected double observation_time, total_connections; 
 	public int count;
-	public String[] hours_over_capacity;
+	public String[] resource_utilizaton_by_hour;
                                     
 	public transducer() {
 		this("systemMonitor", 12);
@@ -32,7 +33,7 @@ public class transducer extends ViewableAtomic{
 	public transducer(String name, double Observation_time) { 
 		super(name);
 		max_connections = null;
-		hours_over_capacity = new String[(int)Observation_time];
+		resource_utilizaton_by_hour = new String[(int)Observation_time];
 		observation_time = Observation_time;
 		addInport("arriv");
 		addInport("solved");
@@ -48,9 +49,10 @@ public class transducer extends ViewableAtomic{
 	 }
 	
 	public void  deltext(double e, message x) { 
-		Continue(e);		  
+		Continue(e);
 		for(int i=0; i < x.size(); i++) {
 			if(messageOnPort(x, "arriv", i)) {
+			   count++;
 		       entity en = x.getValOnPort("arriv", i);
 		       Pair pr1 = (Pair)en;
 		       // the value on the arriv port arrives as a pair with new_connections as the key
@@ -60,10 +62,9 @@ public class transducer extends ViewableAtomic{
 		    } else if(messageOnPort(x, "solved", i)) {		       
 		       entity ent = x.getValOnPort("solved", i);
 		       max_connections = ent;
-		       if(total_connections > Double.parseDouble(max_connections.toString())) {
-		    	   hours_over_capacity[count] = Integer.toString(count);
-		       }
-		       count++;
+		       
+		       double resource_utilization = total_connections / Double.parseDouble(max_connections.toString());
+		       resource_utilizaton_by_hour[count - 1] = convert_double_to_string_percentage(resource_utilization);
 		    }
 		}
 		show_state();
@@ -80,8 +81,16 @@ public class transducer extends ViewableAtomic{
 	
 	public message out( ) {
 		message m = new message();
-		m.add(makeContent("out", new entity(Arrays.toString(hours_over_capacity))));
+		m.add(makeContent("out", new entity(Arrays.toString(resource_utilizaton_by_hour))));
 		return m;
+	}
+	
+	private String convert_double_to_string_percentage(double number) {
+		String stringPercentage;
+		NumberFormat defaultFormat = NumberFormat.getPercentInstance();
+		defaultFormat.setMinimumFractionDigits(2);
+		stringPercentage = defaultFormat.format(number).toString(); 
+		return stringPercentage;
 	}
 	
 	public void show_state() {
@@ -89,6 +98,7 @@ public class transducer extends ViewableAtomic{
 		System.out.println("Total connections: "  +  Math.round(total_connections)); 
 		System.out.println("Max connections: "  +  max_connections); 
 		System.out.println("Count: "  +  Integer.toString(count));
+		System.out.println("Resource utilization by hour: " + Arrays.toString(resource_utilizaton_by_hour));
 	}
 	
 	public String getTooltipText() {

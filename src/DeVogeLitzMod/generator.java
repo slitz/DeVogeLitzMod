@@ -21,9 +21,10 @@ public class generator extends ViewableAtomic{
 	protected entity new_connections;
 	protected entity configuration;
 	protected entity network_latency;
+	protected int count;
                                     
 	public generator() {
-		this("generator", 30);
+		this("generator", 1);
 	}
 	
 	public generator(String name, double Int_arr_time) { 
@@ -37,6 +38,7 @@ public class generator extends ViewableAtomic{
 	    
 	public void initialize() {
 		holdIn("active", int_arr_time);
+		count = 0;
 		super.initialize();
 	 }
 	
@@ -60,7 +62,13 @@ public class generator extends ViewableAtomic{
 	}
 	
 	public void  deltint( ) { 
-		if(phaseIs("active")){			   
+		count ++;
+		if(phaseIs("active")){	
+			// change new connections to a negative number for 2nd half of run to mimic decreasing usage
+			if (count == 6){
+				int negative_connections = Math.negateExact(Integer.parseInt(new_connections.toString()));
+				new_connections = new entity(Integer.toString(negative_connections));
+			}
 			holdIn("active", int_arr_time);
 		} else { 
 			passivate();
