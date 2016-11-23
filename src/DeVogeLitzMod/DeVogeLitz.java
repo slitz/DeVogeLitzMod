@@ -34,24 +34,28 @@ public class DeVogeLitz extends ViewableDigraph{
 	    add(ef);
 	    add(p);	    
 	
-	    addInport("x");
-	
-	    addCoupling(this, "x", ef, "x");
-	    
+	    addInport("Connections");
+	    addInport("Configuration");
+	    addInport("Latency");
+	    addCoupling(this, "Connections", ef, "Connections");
+	    addCoupling(this, "Configuration", ef, "Configuration");
+	    addCoupling(this, "Latency", ef, "Latency");
+		
 	    addCoupling(ef, "out", p, "in");	    
 	    addCoupling(p, "out", ef, "in");	    
 	    
-	    addTestInput("x", new Pair(new Pair(new entity("10"), new entity("basic")), new entity("none")));
-	    addTestInput("x", new Pair(new Pair(new entity("100"), new entity("advanced")), new entity("none")));
-	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("multicore")), new entity("none")));
+	    addTestInput("Connections", new entity("10"));
+	    addTestInput("Connections", new entity("100"));
+	    addTestInput("Connections", new entity("500"));
+	    addTestInput("Connections", new entity("1000"));	
 	    
-	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("basic")), new entity("none")));
-	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("advanced")), new entity("none")));
-	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("multicore")), new entity("none")));
+	    addTestInput("Configuration", new entity("basic"));
+	    addTestInput("Configuration", new entity("advanced"));
+	    addTestInput("Configuration", new entity("multicore"));
 	    
-	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("basic")), new entity("none")));
-	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("advanced")), new entity("medium")));
-	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("multicore")), new entity("high")));
+	    addTestInput("Latency", new entity("none"));
+	    addTestInput("Latency", new entity("medium"));
+	    addTestInput("Latency", new entity("high"));
 	}
     
     /**
