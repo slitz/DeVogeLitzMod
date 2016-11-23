@@ -29,7 +29,9 @@ public class experimentalFrame extends ViewableDigraph{
 	    super("experimentalFrame");
 	    experimentalFrameConstruct(1, 12);
 	    
-	    addTestInput("x", new Pair(new Pair(new entity("1000"), new entity("basic")), new entity("none")));
+	    addTestInput("Connections", new entity("1000"));
+	    addTestInput("Configuration", new entity("basic"));
+	    addTestInput("Latency", new entity("none"));	
 	}
 
 	public experimentalFrame(String nm, double int_arr_t,double observe_t){
@@ -40,7 +42,9 @@ public class experimentalFrame extends ViewableDigraph{
 	public void experimentalFrameConstruct(double int_arr_t, double observe_t){
 
 	    addInport("in");
-	    addInport("x");
+	    addInport("Connections");
+	    addInport("Configuration");
+	    addInport("Latency");
 	    addOutport("out");
 	    addOutport("result");
 	    
@@ -52,7 +56,9 @@ public class experimentalFrame extends ViewableDigraph{
 	    
 	    initialize();
 
-	    addCoupling(this, "x", g, "in");
+	    addCoupling(this, "Connections", g, "Connections");
+	    addCoupling(this, "Configuration", g, "Configuration");
+	    addCoupling(this, "Latency", g, "Latency");	
 	    addCoupling(this, "in", t, "solved");
 	    addCoupling(g, "out", t, "arriv");
 	    addCoupling(t, "out", g, "stop");
