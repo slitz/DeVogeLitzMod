@@ -50,7 +50,7 @@ public class generator extends ViewableAtomic{
 			for (int i=0; i< x.getLength();i++) {
 			if (messageOnPort(x, "stop", i)) {
 					phase = "finishing";
-				exit;
+				return;
 				}
 			}
 			
