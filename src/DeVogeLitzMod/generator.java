@@ -29,7 +29,9 @@ public class generator extends ViewableAtomic{
 	
 	public generator(String name, double Int_arr_time) { 
 	   super(name);
-	   addInport("in");
+	   addInport("Connections");
+	   addInport("Configuration");
+	   addInport("Latency");	
 	   addOutport("out");
 	   addInport("stop");
 	   addInport("start");
@@ -46,17 +48,28 @@ public class generator extends ViewableAtomic{
 		Continue(e);
 		if(phaseIs("active")) {
 			for (int i=0; i< x.getLength();i++) {
-				if (messageOnPort(x,"in",i)) {
-					entity ent = x.getValOnPort("in", i);
-					Pair pr1 = (Pair)ent;
-					Pair pr2 = (Pair)pr1.getKey();
-					new_connections = (entity)pr2.getKey();
-					configuration = (entity)pr2.getValue();
-					network_latency = (entity)pr1.getValue();
-					holdIn("active", int_arr_time);						
-				} else if (messageOnPort(x, "stop", i)) {
+			if (messageOnPort(x, "stop", i)) {
 					phase = "finishing";
+				exit;
 				}
+			}
+			
+			for (int i=0; i< x.getLength();i++) {
+				if (messageOnPort(x,"Connections",i)){
+					new_connections = x.getValOnPort("Connections", i);
+					} 
+			}
+			
+			for (int i=0; i< x.getLength();i++) {
+				if (messageOnPort(x,"Configuration",i)){
+					configuration = x.getValOnPort("Configuration", i);
+					
+				} 
+			}
+			for (int i=0; i< x.getLength();i++) {
+				if (messageOnPort(x,"Latency",i)){
+					network_latency = x.getValOnPort("Latency", i);
+				} 
 			}
 		}
 	}
