@@ -23,14 +23,14 @@ import view.modeling.ViewableComponent;
 import view.modeling.ViewableDigraph;
 import view.simView.*;
 
-public class processorPipeline extends ViewableDigraph{
+public class processorCoupledModel extends ViewableDigraph{
 
-	public processorPipeline(){
-	    super("processorPipeline");
+	public processorCoupledModel(){
+	    super("processorCoupledModel");
 	    make(6000,2); 
 	}
 	
-	public processorPipeline(String name, double proc_time){
+	public processorCoupledModel(String name, double proc_time){
 		 super(name);
 		 make(proc_time, 2);
 	}

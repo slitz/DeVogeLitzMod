@@ -61,8 +61,7 @@ public class transducer extends ViewableAtomic{
 		       total_connections += Double.parseDouble(new_connections.toString());
 		    } else if(messageOnPort(x, "solved", i)) {		       
 		       entity ent = x.getValOnPort("solved", i);
-		       max_connections = ent;
-		       
+		       max_connections = ent;	       
 		       double resource_utilization = total_connections / Double.parseDouble(max_connections.toString());
 		       resource_utilizaton_by_hour[count - 1] = convert_double_to_string_percentage(resource_utilization);
 		    }

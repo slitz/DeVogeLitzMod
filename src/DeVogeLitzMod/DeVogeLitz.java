@@ -26,24 +26,20 @@ import view.simView.*;
 public class DeVogeLitz extends ViewableDigraph{
 
 	public DeVogeLitz(){
-	    super("epm");
+	    super("DeVogeLitz");
 	
 	    ViewableDigraph ef = new experimentalFrame("experimentalFrame", 1, 12);	    
-	    ViewableDigraph p = new processorPipeline("processorPipeline", 1);
+	    ViewableDigraph p = new processorCoupledModel("processorCoupledModel", 1);
 	
 	    add(ef);
 	    add(p);	    
 	
 	    addInport("x");
-	    addOutport("out");
-	    addOutport("result");
 	
 	    addCoupling(this, "x", ef, "x");
 	    
 	    addCoupling(ef, "out", p, "in");	    
-	    addCoupling(p, "out", ef, "in");
-	    
-	    addCoupling(ef, "result", this, "result");	    
+	    addCoupling(p, "out", ef, "in");	    
 	    
 	    addTestInput("x", new Pair(new Pair(new entity("10"), new entity("basic")), new entity("none")));
 	    addTestInput("x", new Pair(new Pair(new entity("100"), new entity("advanced")), new entity("none")));
@@ -66,7 +62,7 @@ public class DeVogeLitz extends ViewableDigraph{
     {
         preferredSize = new Dimension(770, 530);
         ((ViewableComponent)withName("experimentalFrame")).setPreferredLocation(new Point(100, 38));
-        ((ViewableComponent)withName("processorPipeline")).setPreferredLocation(new Point(10, 180));
+        ((ViewableComponent)withName("processorCoupledModel")).setPreferredLocation(new Point(10, 180));
     }
 }
 
