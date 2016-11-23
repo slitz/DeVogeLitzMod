@@ -18,21 +18,20 @@ import util.rand;
 import view.modeling.ViewableAtomic;
 import view.simView.*;
 
-public class processorCoordinator extends ViewableAtomic{  
+public class divideAndConquerCoordinator extends ViewableAtomic{  
 	
 	protected int num_procs, num_results;
 	protected entity job, resourceCapacityEnt, connectionCostEnt;
 	                                
-	public processorCoordinator() {
+	public divideAndConquerCoordinator() {
 		this("processorCoordinator");
 	}
 	
-	public processorCoordinator(String name) { 
+	public divideAndConquerCoordinator(String name) { 
 		super(name);
 		num_procs = 0;
 		num_results = 0;
 		addInport("in");
-	//	addInport("setup");
 		addInport("x");
 		addOutport("out");
 		addOutport("y");
@@ -109,7 +108,7 @@ public class processorCoordinator extends ViewableAtomic{
 	public message out( ) {
 		message m = new message();
 		if (phaseIs("send_out")) {
-			m.add(makeContent("out", new entity("" + Math.round(compute_max_connections()))));
+			m.add(makeContent("out", new Pair(resourceCapacityEnt, connectionCostEnt)));
 		} else if (phaseIs("send_y")) {
 			Pair pr = (Pair)job;
 			entity jobKey = (entity)pr.getKey();
@@ -122,12 +121,6 @@ public class processorCoordinator extends ViewableAtomic{
 	protected void add_procs (devs  p){
 		num_procs++;
 		num_results++;
-	}
-	
-	private double compute_max_connections() {
-		double max_connections = Double.parseDouble(resourceCapacityEnt.toString()) / Double.parseDouble(connectionCostEnt.toString());
-		
-		return max_connections;
 	}
 
 	public void showState() {
