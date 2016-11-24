@@ -34,7 +34,7 @@ public class generator extends ViewableAtomic{
 	   addInport("Latency");	
 	   addOutport("out");
 	   addInport("stop");
-	   addInport("start");
+	  // addInport("start");
 	   int_arr_time = Int_arr_time ;
 	}
 	    
