@@ -37,9 +37,11 @@ public class DeVogeLitz extends ViewableDigraph{
 	    addInport("Connections");
 	    addInport("Configuration");
 	    addInport("Latency");
+	    addOutport("Result");
 	    addCoupling(this, "Connections", ef, "Connections");
 	    addCoupling(this, "Configuration", ef, "Configuration");
 	    addCoupling(this, "Latency", ef, "Latency");
+	    addCoupling(ef, "result", this, "Result");	
 		
 	    addCoupling(ef, "out", p, "in");	    
 	    addCoupling(p, "out", ef, "in");	    
