@@ -66,8 +66,8 @@ public class DeVogeLitz extends ViewableDigraph{
      */
 	public void layoutForSimView()
     {
-        preferredSize = new Dimension(770, 530);
-        ((ViewableComponent)withName("experimentalFrame")).setPreferredLocation(new Point(100, 38));
+        preferredSize = new Dimension(870, 530);
+        ((ViewableComponent)withName("experimentalFrame")).setPreferredLocation(new Point(10, 38));
         ((ViewableComponent)withName("processorCoupledModel")).setPreferredLocation(new Point(10, 180));
     }
 }

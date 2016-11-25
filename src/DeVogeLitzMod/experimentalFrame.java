@@ -72,7 +72,7 @@ public class experimentalFrame extends ViewableDigraph{
      */
 	public void layoutForSimView()
     {
-		preferredSize = new Dimension(497, 110);
+		preferredSize = new Dimension(670, 110);
 		((ViewableComponent)withName("t")).setPreferredLocation(new Point(10, 31));
         ((ViewableComponent)withName("g")).setPreferredLocation(new Point(220, 31));
     }

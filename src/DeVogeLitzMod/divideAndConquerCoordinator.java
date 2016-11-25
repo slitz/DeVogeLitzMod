@@ -24,7 +24,7 @@ public class divideAndConquerCoordinator extends ViewableAtomic{
 	protected entity job, resourceCapacityEnt, connectionCostEnt;
 	                                
 	public divideAndConquerCoordinator() {
-		this("processorCoordinator");
+		this("divideAndConquerCoordinator");
 	}
 	
 	public divideAndConquerCoordinator(String name) { 
