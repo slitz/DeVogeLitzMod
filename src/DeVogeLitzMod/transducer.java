@@ -27,14 +27,14 @@ public class transducer extends ViewableAtomic{
 	public String[] resource_utilizaton_by_hour;
                                     
 	public transducer() {
-		this("systemMonitor", 12);
+		this("transducer", 12);
 	}
 	
 	public transducer(String name, double Observation_time) { 
 		super(name);
 		max_connections = null;
-		resource_utilizaton_by_hour = new String[(int)Observation_time];
 		observation_time = Observation_time;
+		resource_utilizaton_by_hour = new String[(int)Observation_time];
 		addInport("arriv");
 		addInport("solved");
 		addOutport("out");
@@ -45,6 +45,7 @@ public class transducer extends ViewableAtomic{
 		sigma = observation_time;
 		total_connections = 0;
 		count = 0;
+		resource_utilizaton_by_hour = new String[(int)observation_time];;
 		super.initialize();
 	 }
 	

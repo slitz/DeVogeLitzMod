@@ -39,7 +39,8 @@ public class generator extends ViewableAtomic{
 	}
 	    
 	public void initialize() {
-		holdIn("active", int_arr_time);
+		phase = "passive";
+		sigma = INFINITY;
 		count = 0;
 		super.initialize();
 	 }
@@ -53,23 +54,25 @@ public class generator extends ViewableAtomic{
 				return;
 				}
 			}
-			
+		}
+		if(phaseIs("passive")) {
 			for (int i=0; i< x.getLength();i++) {
 				if (messageOnPort(x,"Connections",i)){
 					new_connections = x.getValOnPort("Connections", i);
-					} 
+				} 
 			}
-			
 			for (int i=0; i< x.getLength();i++) {
 				if (messageOnPort(x,"Configuration",i)){
-					configuration = x.getValOnPort("Configuration", i);
-					
+					configuration = x.getValOnPort("Configuration", i);	
 				} 
 			}
 			for (int i=0; i< x.getLength();i++) {
 				if (messageOnPort(x,"Latency",i)){
 					network_latency = x.getValOnPort("Latency", i);
 				} 
+			}
+			if(new_connections != null && configuration != null && network_latency != null) {
+				holdIn("active", int_arr_time);
 			}
 		}
 	}
@@ -78,7 +81,7 @@ public class generator extends ViewableAtomic{
 		count ++;
 		if(phaseIs("active")){	
 			// change new connections to a negative number for 2nd half of run to mimic decreasing usage
-			if (count >= 6){
+			if (count == 6){
 				int negative_connections = Math.negateExact(Integer.parseInt(new_connections.toString()));
 				new_connections = new entity(Integer.toString(negative_connections));
 			}
