@@ -46,7 +46,7 @@ public class DeVogeLitz extends ViewableDigraph{
 	    addCoupling(ef, "out", p, "in");	    
 	    addCoupling(p, "out", ef, "in");	    
 	    
-	    addTestInput("Connections", new entity("10"));
+	  
 	    addTestInput("Connections", new entity("100"));
 	    addTestInput("Connections", new entity("500"));
 	    addTestInput("Connections", new entity("1000"));	
