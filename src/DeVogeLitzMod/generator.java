@@ -78,7 +78,7 @@ public class generator extends ViewableAtomic{
 		count ++;
 		if(phaseIs("active")){	
 			// change new connections to a negative number for 2nd half of run to mimic decreasing usage
-			if (count == 6){
+			if (count >= 6){
 				int negative_connections = Math.negateExact(Integer.parseInt(new_connections.toString()));
 				new_connections = new entity(Integer.toString(negative_connections));
 			}
