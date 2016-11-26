@@ -42,7 +42,7 @@ public class transducer extends ViewableAtomic{
 	    
 	public void initialize() {
 		phase = "active";
-		sigma = observation_time;
+		sigma = observation_time + 1;
 		total_connections = 0;
 		count = 0;
 		resource_utilizaton_by_hour = new String[(int)observation_time];;
@@ -51,21 +51,23 @@ public class transducer extends ViewableAtomic{
 	
 	public void  deltext(double e, message x) { 
 		Continue(e);
-		for(int i=0; i < x.size(); i++) {
-			if(messageOnPort(x, "arriv", i)) {
-			   count++;
-		       entity en = x.getValOnPort("arriv", i);
-		       Pair pr1 = (Pair)en;
-		       // the value on the arriv port arrives as a pair with new_connections as the key
-		       Pair pr2 = (Pair)pr1.getKey();
-		       new_connections = (entity)pr2.getKey();
-		       total_connections += Double.parseDouble(new_connections.toString());
-		    } else if(messageOnPort(x, "solved", i)) {		       
-		       entity ent = x.getValOnPort("solved", i);
-		       max_connections = ent;	       
-		       double resource_utilization = total_connections / Double.parseDouble(max_connections.toString());
-		       resource_utilizaton_by_hour[count - 1] = convert_double_to_string_percentage(resource_utilization);
-		    }
+		if(phaseIs("active")){
+			for(int i=0; i < x.size(); i++) {
+				if(messageOnPort(x, "arriv", i)) {
+				   count++;
+			       entity en = x.getValOnPort("arriv", i);
+			       Pair pr1 = (Pair)en;
+			       // the value on the arriv port arrives as a pair with new_connections as the key
+			       Pair pr2 = (Pair)pr1.getKey();
+			       new_connections = (entity)pr2.getKey();
+			       total_connections += Double.parseDouble(new_connections.toString());
+			    } else if(messageOnPort(x, "solved", i)) {		       
+			       entity ent = x.getValOnPort("solved", i);
+			       max_connections = ent;	       
+			       double resource_utilization = total_connections / Double.parseDouble(max_connections.toString());
+			       resource_utilizaton_by_hour[count - 1] = convert_double_to_string_percentage(resource_utilization);
+			    }
+			}
 		}
 		show_state();
 	}
