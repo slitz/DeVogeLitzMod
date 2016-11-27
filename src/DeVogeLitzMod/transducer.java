@@ -32,7 +32,6 @@ public class transducer extends ViewableAtomic{
 	
 	public transducer(String name, double Observation_time) { 
 		super(name);
-		max_connections = null;
 		observation_time = Observation_time;
 		resource_utilizaton_by_hour = new String[(int)Observation_time];
 		addInport("arriv");
@@ -41,9 +40,10 @@ public class transducer extends ViewableAtomic{
 	}
 	    
 	public void initialize() {
-		phase = "active";
-		sigma = observation_time + 1;
+		phase = "passive";
+		sigma = INFINITY;
 		total_connections = 0;
+		max_connections = null;
 		count = 0;
 		resource_utilizaton_by_hour = new String[(int)observation_time];;
 		super.initialize();
@@ -51,6 +51,9 @@ public class transducer extends ViewableAtomic{
 	
 	public void  deltext(double e, message x) { 
 		Continue(e);
+		if(phaseIs("passive") && count == 0){
+			holdIn("active", observation_time);
+		}
 		if(phaseIs("active")){
 			for(int i=0; i < x.size(); i++) {
 				if(messageOnPort(x, "arriv", i)) {

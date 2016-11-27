@@ -32,14 +32,6 @@ public class configurationProcessor extends ViewableAtomic{
 		processing_time = Processing_time;
 		addInport("in");		
 		addOutport("out");	
-		
-		//addTestInput("in", new entity("basic"));
-		//addTestInput("in", new entity("advanced"));
-		//addTestInput("in", new entity("multicore"));
-		
-		//addTestInput("in", new entity("none"));
-		//addTestInput("in", new entity("medium"));
-		//addTestInput("in", new entity("high"));
 	}
 	    
 	public void initialize() {
