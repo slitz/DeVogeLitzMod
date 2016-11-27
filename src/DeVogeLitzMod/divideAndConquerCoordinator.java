@@ -43,6 +43,8 @@ public class divideAndConquerCoordinator extends ViewableAtomic{
 		phase = "passive";
 		sigma = INFINITY;
 		job = null;
+		resourceCapacityEnt = null;
+		connectionCostEnt = null;
 	    super.initialize();
 	 }
 	

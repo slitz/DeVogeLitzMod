@@ -18,9 +18,7 @@ import view.modeling.ViewableAtomic;
 public class generator extends ViewableAtomic{  
 	
 	protected double int_arr_time;
-	protected entity new_connections;
-	protected entity configuration;
-	protected entity network_latency;
+	protected entity new_connections, configuration, network_latency;
 	protected int count;
                                     
 	public generator() {
@@ -34,13 +32,15 @@ public class generator extends ViewableAtomic{
 	   addInport("Latency");	
 	   addOutport("out");
 	   addInport("stop");
-	  // addInport("start");
 	   int_arr_time = Int_arr_time ;
 	}
 	    
 	public void initialize() {
 		phase = "passive";
 		sigma = INFINITY;
+		new_connections = null;
+		configuration = null;
+		network_latency = null;
 		count = 0;
 		super.initialize();
 	 }

@@ -17,7 +17,7 @@ public class ViewUtils
 {    
     
     /** Dimension of the main GUI window.*/    
-    public static final Dimension FRAME_DIM = new Dimension(1150,900); 
+    public static final Dimension FRAME_DIM = new Dimension(1250,900); 
     
     /** Title of the main GUI window.*/
     public static final String FRAME_TITLE = "DEVS-Suite Ver 3.0.0"; 

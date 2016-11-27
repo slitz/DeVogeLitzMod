@@ -287,7 +287,7 @@ public class FModelView extends JPanel
         }
         
         
-        portNamePanel.setPreferredSize(new Dimension(100,-1));
+        portNamePanel.setPreferredSize(new Dimension(130,-1));
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(portNamePanel,BorderLayout.WEST);
         panel.add(injectPanel,BorderLayout.CENTER);
