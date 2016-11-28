@@ -24,7 +24,7 @@ public class configurationProcessor extends ViewableAtomic{
 	protected static final double MAX_CPU_UTILIZATION = 0.75;  // CPU percentage threshold	
                                     
 	public configurationProcessor() {
-		this("configurationProcessor", 1);
+		this("configurationProcessor", 0);
 	}
 	
 	public configurationProcessor(String name, double Processing_time) { 
@@ -51,7 +51,7 @@ public class configurationProcessor extends ViewableAtomic{
 					Pair pr1 = (Pair)ent;
 					Pair pr2 = (Pair)pr1.getKey();					
 					configuration = (entity)pr2.getValue();
-					holdIn("busy", 0);
+					holdIn("busy", processing_time);
 				}
 			}
 		}

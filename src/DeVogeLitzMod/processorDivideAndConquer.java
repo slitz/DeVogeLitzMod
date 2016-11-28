@@ -41,8 +41,8 @@ public class processorDivideAndConquer extends ViewableDigraph{
 		addOutport("out");
 
 		divideAndConquerCoordinator divAndConCoord  = new divideAndConquerCoordinator("divAndConCoord");
-		configurationProcessor configProc  = new configurationProcessor("configProc", 1);
-		connectionCostProcessor conCostProc  = new connectionCostProcessor("conCostProc", 1);
+		configurationProcessor configProc  = new configurationProcessor("configProc", proc_time);
+		connectionCostProcessor conCostProc  = new connectionCostProcessor("conCostProc", proc_time);
 		
 		add(divAndConCoord);
 		add(configProc);

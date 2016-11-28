@@ -40,8 +40,8 @@ public class processorCoupledModel extends ViewableDigraph{
 		addOutport("out");
 
 		pipelineCoordinator pipeCoord = new pipelineCoordinator("pipeCoord");
-		processorDivideAndConquer procDivAndCon  = new processorDivideAndConquer("procDivAndCon", 1);
-		maxConnectionsProcessor maxConProc = new maxConnectionsProcessor("maxConProc", 1);
+		processorDivideAndConquer procDivAndCon  = new processorDivideAndConquer("procDivAndCon", 0);
+		maxConnectionsProcessor maxConProc = new maxConnectionsProcessor("maxConProc", 0);
 		
 		add(pipeCoord);
 		add(procDivAndCon);

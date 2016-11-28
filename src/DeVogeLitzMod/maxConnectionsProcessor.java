@@ -23,7 +23,7 @@ public class maxConnectionsProcessor extends ViewableAtomic{
 	protected entity resource_capacity, connection_cost;
                                     
 	public maxConnectionsProcessor() {
-		this("maxConnectionsProcessor", 1);
+		this("maxConnectionsProcessor", 0);
 	}
 	
 	public maxConnectionsProcessor(String name, double Processing_time) { 

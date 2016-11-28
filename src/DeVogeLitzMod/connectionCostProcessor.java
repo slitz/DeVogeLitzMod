@@ -24,7 +24,7 @@ public class connectionCostProcessor extends ViewableAtomic{
 	protected static final double CONNECTION_COST = 0.245; // CPU cost per connection
                                     
 	public connectionCostProcessor() {
-		this("connectionCostProcessor", 1);
+		this("connectionCostProcessor", 0);
 	}
 	
 	public connectionCostProcessor(String name, double Processing_time) { 
@@ -50,7 +50,7 @@ public class connectionCostProcessor extends ViewableAtomic{
 					// the entity passed from the generator is a pair that contains a pair and an entity
 					Pair pr = (Pair)ent;
 					network_latency = (entity)pr.getValue();
-					holdIn("busy", 0);
+					holdIn("busy", processing_time);
 				}
 			}
 		}
