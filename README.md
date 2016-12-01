@@ -3,12 +3,12 @@ CSE561 Class Project
 
 Execution guide:
 
-1) Import the source code into Eclipse*.
-2) Build and export a .jar file.
-3) Launch the DEVS-Suite simulator.
-4) Select File > Load Model then click the Configure button.
-5) Enter the path to the .jar file in the "Path to packages of model classes ... " field.
-6) Enter '.' (no quotes) in "Path to packages of model source files ... " field.
+# Import the source code into Eclipse*.
+# Build and export a .jar file.
+# Launch the DEVS-Suite simulator.
+# Select File > Load Model then click the Configure button.
+# Enter the path to the .jar file in the "Path to packages of model classes ... " field.
+# Enter '.' (no quotes) in "Path to packages of model source files ... " field.
 7) Enter DeVogeLitzMod in the "Model package names ... " field.
 8) Click the OK button.
 9) Select DeVogeLitzMod from the Package drop down.
