@@ -3,7 +3,7 @@ CSE561 Class Project
 
 Execution guide:
 
-1) Import the source code into Eclipse.
+1) Import the source code into Eclipse*.
 2) Build and export a .jar file.
 3) Launch the DEVS-Suite simulator.
 4) Select File > Load Model then click the Configure button.
@@ -18,3 +18,5 @@ Execution guide:
 13) Select DeVogeLitz in the Model Viewer and click the Inject Input button.
 14) Select an input port and test value combination then click OK (repeat for each input port).
 15) Run model.
+
+* See http://acims.asu.edu/software/devs-suite/ for more information about DEVS-Suite source code.
