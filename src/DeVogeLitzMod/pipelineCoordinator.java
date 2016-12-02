@@ -49,15 +49,6 @@ public class pipelineCoordinator extends ViewableAtomic{
 	public void  deltext(double e, message x) { 
 		Continue(e);
 		if (phaseIs("passive")) {
-			 for (int i=0; i< x.size();i++) {
-				 if (messageOnPort(x,"setup",i)) {
-				     add_procs(new processorDivideAndConquer("processorDivideAndConquer", 1));
-				     add_procs(new configurationProcessor("maxConnectionsProcessor", 1));
-				 }
-			 }
-		}
-		
-		if (phaseIs("passive")) {
 			for (int i=0; i< x.size();i++) {
 				if (messageOnPort(x,"in",i)) {
 					job = x.getValOnPort("in",i);
