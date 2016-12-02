@@ -50,14 +50,6 @@ public class divideAndConquerCoordinator extends ViewableAtomic{
 	
 	public void  deltext(double e, message x) { 
 		Continue(e);
-		if (phaseIs("passive")) {
-			 for (int i=0; i< x.size();i++) {
-				 if (messageOnPort(x,"setup",i)) {
-				     add_procs(new connectionCostProcessor("connectionCostProcessor", 1));
-				     add_procs(new configurationProcessor("configurationProcessor", 1));
-				 }
-			 }
-		}
 		
 		if (phaseIs("passive")) {
 			for (int i=0; i< x.size();i++) {
